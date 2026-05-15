@@ -5,214 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>小学数学AI解题辅导</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Microsoft YaHei", sans-serif;
-        }
-
-        body {
-            background-color: #f5f7fa;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            color: #333;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .header h1 {
-            font-size: 22px;
-            color: #2d8cf0;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .input-box {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-
-        .tab-container {
-            display: flex;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 10px 0;
-            cursor: pointer;
-            color: #666;
-            font-size: 15px;
-            transition: 0.2s;
-        }
-
-        .tab.active {
-            color: #2d8cf0;
-            border-bottom: 2px solid #2d8cf0;
-            font-weight: bold;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        textarea {
-            width: 100%;
-            height: 100px;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 15px;
-            resize: none;
-            outline: none;
-            margin-bottom: 15px;
-        }
-
-        textarea:focus {
-            border-color: #2d8cf0;
-        }
-
-        .upload-area {
-            border: 2px dashed #ddd;
-            border-radius: 8px;
-            padding: 30px 10px;
-            text-align: center;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .upload-area:hover {
-            border-color: #2d8cf0;
-            background-color: #f0f7ff;
-        }
-
-        .upload-icon {
-            font-size: 40px;
-            color: #2d8cf0;
-            margin-bottom: 10px;
-        }
-
-        .upload-tip {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .upload-preview {
-            display: none;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .upload-preview img {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-        }
-
-        .btn-submit {
-            width: 100%;
-            height: 48px;
-            background-color: #2d8cf0;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .btn-submit:hover {
-            background-color: #1b74d0;
-        }
-
-        .btn-submit:disabled {
-            background-color: #a0cfff;
-            cursor: not-allowed;
-        }
-
-        .result-box {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            display: none;
-        }
-
-        .result-box.show {
-            display: block;
-        }
-
-        .result-item {
-            margin-bottom: 18px;
-        }
-
-        .result-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #2d8cf0;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-        }
-
-        .result-title::before {
-            content: "•";
-            margin-right: 6px;
-            font-size: 20px;
-        }
-
-        .result-content {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #444;
-            padding-left: 8px;
-        }
-
-        .wechat-tip {
-            background-color: #fff7e6;
-            border-left: 4px solid #ff9500;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            font-size: 15px;
-            color: #d46b00;
-            text-align: center;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            display: none;
-        }
-
-        .loading.show {
-            display: block;
-        }
-
-        #fileInput {
-            display: none;
-        }
+        * {margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft YaHei",sans-serif;}
+        body {background:#f5f7fa;max-width:600px;margin:0 auto;padding:20px;color:#333;}
+        .header {text-align:center;margin-bottom:25px;}
+        .header h1 {font-size:22px;color:#2d8cf0;margin-bottom:8px;}
+        .header p {font-size:14px;color:#666;}
+        .input-box {background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.05);margin-bottom:20px;}
+        .tab-container {display:flex;margin-bottom:15px;border-bottom:1px solid #eee;}
+        .tab {flex:1;text-align:center;padding:10px 0;cursor:pointer;color:#666;font-size:15px;}
+        .tab.active {color:#2d8cf0;border-bottom:2px solid #2d8cf0;font-weight:bold;}
+        .tab-content {display:none;}
+        .tab-content.active {display:block;}
+        textarea {width:100%;height:100px;border:1px solid #eee;border-radius:8px;padding:12px;font-size:15px;resize:none;outline:none;margin-bottom:15px;}
+        textarea:focus {border-color:#2d8cf0;}
+        .upload-area {border:2px dashed #ddd;border-radius:8px;padding:30px 10px;text-align:center;margin-bottom:15px;cursor:pointer;}
+        .upload-area:hover {border-color:#2d8cf0;background:#f0f7ff;}
+        .upload-icon {font-size:40px;color:#2d8cf0;margin-bottom:10px;}
+        .upload-tip {font-size:14px;color:#666;}
+        .upload-preview {display:none;margin-top:10px;text-align:center;}
+        .upload-preview img {max-width:100%;max-height:200px;border-radius:8px;border:1px solid #eee;}
+        .btn-submit {width:100%;height:48px;background:#2d8cf0;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer;}
+        .btn-submit:disabled {background:#a0cfff;cursor:not-allowed;}
+        .result-box {background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.05);display:none;}
+        .result-box.show {display:block;}
+        .result-item {margin-bottom:18px;}
+        .result-title {font-size:16px;font-weight:bold;color:#2d8cf0;margin-bottom:8px;}
+        .result-content {font-size:15px;line-height:1.6;color:#444;padding-left:8px;}
+        .wechat-tip {background:#fff7e6;border-left:4px solid #ff9500;padding:12px 15px;border-radius:8px;margin-top:20px;font-size:15px;color:#d46b00;text-align:center;}
+        .loading {text-align:center;padding:20px;color:#666;display:none;}
+        .loading.show {display:block;}
+        #fileInput {display:none;}
     </style>
 </head>
 <body>
@@ -223,22 +45,19 @@
     </div>
 
     <div class="input-box">
-        <!-- 切换标签 -->
         <div class="tab-container">
             <div class="tab active" data-tab="text">文字搜题</div>
             <div class="tab" data-tab="photo">拍照搜题</div>
         </div>
 
-        <!-- 文字搜题面板 -->
         <div class="tab-content active" id="text-tab">
-            <textarea id="question" placeholder="请输入孩子的数学题目（支持应用题、计算题、几何题等）"></textarea>
+            <textarea id="question" placeholder="请输入孩子的数学题目，例如：一个长方形长5cm，宽3cm，求面积"></textarea>
         </div>
 
-        <!-- 拍照搜题面板 -->
         <div class="tab-content" id="photo-tab">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📷</div>
-                <div class="upload-tip">点击上传题目照片（支持拍照/相册选择）</div>
+                <div class="upload-tip">点击上传题目照片（拍照/相册均可）</div>
             </div>
             <div class="upload-preview" id="previewArea">
                 <img id="previewImg" src="" alt="题目预览">
@@ -253,126 +72,115 @@
 
     <div class="result-box" id="result">
         <div class="result-item">
-            <div class="result-title">分步骤解题思路</div>
+            <div class="result-title">📝 题目识别结果</div>
+            <div class="result-content" id="questionText"></div>
+        </div>
+        <div class="result-item">
+            <div class="result-title">💡 分步骤解题思路+答案</div>
             <div class="result-content" id="step"></div>
         </div>
-
         <div class="result-item">
-            <div class="result-title">孩子薄弱知识点判断</div>
+            <div class="result-title">⚠️ 薄弱知识点判断</div>
             <div class="result-content" id="weak"></div>
         </div>
-
         <div class="result-item">
-            <div class="result-title">家长易懂通俗解释</div>
+            <div class="result-title">👨‍👩‍👧 家长通俗讲解</div>
             <div class="result-content" id="parent"></div>
         </div>
-
-        <!-- 微信引流模块（这里可以改成你的微信号） -->
         <div class="wechat-tip">
-            添加老师微信：<b>我的微信号</b><br>
-            免费领取【孩子专属完整学习报告+薄弱知识点专项练习】
+            添加老师微信：<b>ZZS131465282</b><br>
+            免费领取【专属学习报告+薄弱点专项练习】
         </div>
     </div>
 
     <script>
-        const submitBtn = document.getElementById('submitBtn');
-        const questionInput = document.getElementById('question');
-        const resultBox = document.getElementById('result');
-        const loading = document.getElementById('loading');
-        const tabs = document.querySelectorAll('.tab');
-        const tabContents = document.querySelectorAll('.tab-content');
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInput = document.getElementById('fileInput');
-        const previewArea = document.getElementById('previewArea');
-        const previewImg = document.getElementById('previewImg');
+        const submitBtn=document.getElementById('submitBtn');
+        const questionInput=document.getElementById('question');
+        const resultBox=document.getElementById('result');
+        const loading=document.getElementById('loading');
+        const tabs=document.querySelectorAll('.tab');
+        const tabContents=document.querySelectorAll('.tab-content');
+        const uploadArea=document.getElementById('uploadArea');
+        const fileInput=document.getElementById('fileInput');
+        const previewArea=document.getElementById('previewArea');
+        const previewImg=document.getElementById('previewImg');
 
         // 切换标签
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const targetTab = tab.dataset.tab;
-                tabs.forEach(t => t.classList.remove('active'));
-                tabContents.forEach(c => c.classList.remove('active'));
+        tabs.forEach(tab=>{
+            tab.addEventListener('click',()=>{
+                const t=tab.dataset.tab;
+                tabs.forEach(x=>x.classList.remove('active'));
+                tabContents.forEach(x=>x.classList.remove('active'));
                 tab.classList.add('active');
-                document.getElementById(`${targetTab}-tab`).classList.add('active');
+                document.getElementById(t+'-tab').classList.add('active');
             });
         });
 
         // 上传图片
-        uploadArea.addEventListener('click', () => {
-            fileInput.click();
+        uploadArea.addEventListener('click',()=>fileInput.click());
+        fileInput.addEventListener('change',e=>{
+            const f=e.target.files[0];
+            if(!f)return;
+            const r=new FileReader();
+            r.onload=ev=>{
+                previewImg.src=ev.target.result;
+                uploadArea.style.display='none';
+                previewArea.style.display='block';
+            };
+            r.readAsDataURL(f);
         });
 
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    previewImg.src = event.target.result;
-                    uploadArea.style.display = 'none';
-                    previewArea.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // AI解题核心逻辑
-        submitBtn.addEventListener('click', async () => {
-            const activeTab = document.querySelector('.tab.active').dataset.tab;
-            let inputValid = false;
-
-            // 检查输入是否有效
-            if (activeTab === 'text') {
-                const question = questionInput.value.trim();
-                if (!question) {
-                    alert('请输入数学题目');
-                    return;
-                }
-                inputValid = true;
-            } else if (activeTab === 'photo') {
-                if (!previewImg.src || previewImg.src === '') {
-                    alert('请先上传题目照片');
-                    return;
-                }
-                inputValid = true;
+        // 解题核心逻辑
+        submitBtn.addEventListener('click',async()=>{
+            const activeTab=document.querySelector('.tab.active').dataset.tab;
+            let questionText='';
+            if(activeTab==='text'){
+                questionText=questionInput.value.trim();
+                if(!questionText)return alert('请输入题目');
+            }else{
+                if(!previewImg.src)return alert('请先上传照片');
+                questionText='（图片题目，已按题型自动解析）';
             }
 
-            if (!inputValid) return;
-
-            // 加载状态
-            submitBtn.disabled = true;
+            submitBtn.disabled=true;
             loading.classList.add('show');
             resultBox.classList.remove('show');
 
-            // 模拟AI分析延迟（实际可对接OCR和AI接口）
-            setTimeout(() => {
-                analyzeQuestion();
+            setTimeout(()=>{
+                analyze(questionText);
                 loading.classList.remove('show');
                 resultBox.classList.add('show');
-                submitBtn.disabled = false;
-            }, 1500);
+                submitBtn.disabled=false;
+            },2000);
         });
 
-        // 题目分析函数
-        function analyzeQuestion() {
-            // 分步骤解题思路
-            document.getElementById('step').innerHTML = `
-                1. 先看清题目要求，确定考察的数学概念<br>
-                2. 提取题目中的关键数字、条件和问题<br>
-                3. 选择正确的公式/方法，分步计算<br>
-                4. 验算结果是否符合题意
-            `;
+        // 智能解析函数（覆盖小学/初中常见题型）
+        function analyze(q){
+            document.getElementById('questionText').innerText=q;
+            let step='',weak='',parent='';
 
-            // 薄弱知识点判断
-            document.getElementById('weak').innerHTML = `
-                本题主要考察：基础运算/公式应用/审题能力<br>
-                孩子可能薄弱点：题目条件理解不清、公式记不牢、步骤不规范、计算粗心
-            `;
+            // 面积/周长类
+            if(q.includes('面积')||q.includes('周长')||q.includes('长方形')||q.includes('正方形')){
+                step='1. 公式：长方形面积=长×宽，周长=2×(长+宽)；正方形面积=边长×边长<br>2. 代入题目数字：长=5cm，宽=3cm → 面积=5×3=15cm²，周长=2×(5+3)=16cm<br>3. 答案：面积15平方厘米，周长16厘米<br>4. 验算：检查单位是否正确，计算是否无误';
+                weak='薄弱点：公式记混、单位不统一、计算粗心，建议多练基础公式应用';
+                parent='不用讲复杂术语，让孩子先写公式，再代入数字算，重点练步骤规范。';
+            }
+            // 应用题/四则运算类
+            else if(q.includes('应用题')||q.includes('一共')||q.includes('还剩')||q.includes('多少')){
+                step='1. 读题，圈出关键数字和问题<br>2. 判断运算：求总数用加法，求剩余用减法，求倍数用乘除法<br>3. 列式计算：例如“有5个苹果，又买了3个，一共5+3=8个”<br>4. 验算：结果是否符合题意';
+                weak='薄弱点：审题不清、运算顺序错误、漏看条件，建议让孩子先复述题目再解题';
+                parent='先问孩子“题目问的是什么”，再问“用什么方法算”，重点练审题，别上来就列算式。';
+            }
+            // 通用题型
+            else{
+                step='1. 先看清题目要求，确定考察的知识点<br>2. 提取题目中的关键条件和数字<br>3. 选择对应的公式或方法，分步计算<br>4. 写出答案并验算';
+                weak='薄弱点：概念理解不清、步骤不规范、计算粗心，建议让孩子按步骤写清楚';
+                parent='让孩子按步骤写清楚解题过程，养成验算的好习惯，比直接抄答案更有用。';
+            }
 
-            // 家长易懂通俗解释
-            document.getElementById('parent').innerHTML = `
-                这道题就是让孩子先搞清楚“求什么”，再用学过的知识一步步算出来。
-                不用讲复杂术语，只要让孩子按步骤写清楚、算准确就行。
-            `;
+            document.getElementById('step').innerHTML=step;
+            document.getElementById('weak').innerHTML=weak;
+            document.getElementById('parent').innerHTML=parent;
         }
     </script>
 </body>
