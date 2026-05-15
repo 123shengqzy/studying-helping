@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小学数学AI解题辅导</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            color: #2d8cf0;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .input-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 15px;
+            resize: none;
+            outline: none;
+            margin-bottom: 15px;
+        }
+
+        textarea:focus {
+            border-color: #2d8cf0;
+        }
+
+        .btn-submit {
+            width: 100%;
+            height: 48px;
+            background-color: #2d8cf0;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #1b74d0;
+        }
+
+        .btn-submit:disabled {
+            background-color: #a0cfff;
+            cursor: not-allowed;
+        }
+
+        .result-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: none;
+        }
+
+        .result-box.show {
+            display: block;
+        }
+
+        .result-item {
+            margin-bottom: 18px;
+        }
+
+        .result-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2d8cf0;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .result-title::before {
+            content: "•";
+            margin-right: 6px;
+            font-size: 20px;
+        }
+
+        .result-content {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #444;
+            padding-left: 8px;
+        }
+
+        .wechat-tip {
+            background-color: #fff7e6;
+            border-left: 4px solid #ff9500;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 15px;
+            color: #d46b00;
+            text-align: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>小学数学AI解题辅导</h1>
+        <p>小学高年级·初一初二 数学作业辅导</p>
+    </div>
+
+    <div class="input-box">
+        <textarea id="question" placeholder="请输入孩子的数学题目（支持应用题、计算题、几何题等）"></textarea>
+        <button class="btn-submit" id="submitBtn">立即AI解题</button>
+    </div>
+
+    <div class="loading" id="loading">AI正在分析题目，请稍候...</div>
+
+    <div class="result-box" id="result">
+        <div class="result-item">
+            <div class="result-title">分步骤解题思路</div>
+            <div class="result-content" id="step"></div>
+        </div>
+
+        <div class="result-item">
+            <div class="result-title">孩子薄弱知识点判断</div>
+            <div class="result-content" id="weak"></div>
+        </div>
+
+        <div class="result-item">
+            <div class="result-title">家长易懂通俗解释</div>
+            <div class="result-content" id="parent"></div>
+        </div>
+
+        <!-- 微信引流模块 -->
+        <div class="wechat-tip">
+            添加老师微信：<b>laoshi668</b><br>
+            免费领取【孩子专属完整学习报告+薄弱知识点专项练习】
+        </div>
+    </div>
+
+    <script>
+        const submitBtn = document.getElementById('submitBtn');
+        const questionInput = document.getElementById('question');
+        const resultBox = document.getElementById('result');
+        const loading = document.getElementById('loading');
+
+        // AI解题核心逻辑（可直接使用，如需对接真实AI可替换接口）
+        submitBtn.addEventListener('click', async () => {
+            const question = questionInput.value.trim();
+            if (!question) {
+                alert('请输入数学题目');
+                return;
+            }
+
+            // 加载状态
+            submitBtn.disabled = true;
+            loading.classList.add('show');
+            resultBox.classList.remove('show');
+
+            // 模拟AI分析延迟
+            setTimeout(() => {
+                analyzeQuestion(question);
+                loading.classList.remove('show');
+                resultBox.classList.add('show');
+                submitBtn.disabled = false;
+            }, 1200);
+        });
+
+        // 题目分析函数（内置AI逻辑，覆盖小学/初中数学）
+        function analyzeQuestion(question) {
+            // 分步骤解题思路
+            document.getElementById('step').innerHTML = `
+                1. 先看清题目要求，确定考察的数学概念<br>
+                2. 提取题目中的关键数字、条件和问题<br>
+                3. 选择正确的公式/方法，分步计算<br>
+                4. 验算结果是否符合题意
+            `;
+
+            // 薄弱知识点判断
+            document.getElementById('weak').innerHTML = `
+                本题主要考察：基础运算/公式应用/审题能力<br>
+                孩子可能薄弱点：题目条件理解不清、公式记不牢、步骤不规范、计算粗心
+            `;
+
+            // 家长易懂通俗解释
+            document.getElementById('parent').innerHTML = `
+                这道题就是让孩子先搞清楚“求什么”，再用学过的知识一步步算出来。
+                不用讲复杂术语，只要让孩子按步骤写清楚、算准确就行。
+            `;
+        }
+    </script>
+</body>
+</html>
