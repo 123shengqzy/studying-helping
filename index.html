@@ -44,6 +44,36 @@
             margin-bottom: 20px;
         }
 
+        .tab-container {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            cursor: pointer;
+            color: #666;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .tab.active {
+            color: #2d8cf0;
+            border-bottom: 2px solid #2d8cf0;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         textarea {
             width: 100%;
             height: 100px;
@@ -58,6 +88,45 @@
 
         textarea:focus {
             border-color: #2d8cf0;
+        }
+
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px 10px;
+            text-align: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .upload-area:hover {
+            border-color: #2d8cf0;
+            background-color: #f0f7ff;
+        }
+
+        .upload-icon {
+            font-size: 40px;
+            color: #2d8cf0;
+            margin-bottom: 10px;
+        }
+
+        .upload-tip {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .upload-preview {
+            display: none;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .upload-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 1px solid #eee;
         }
 
         .btn-submit {
@@ -140,6 +209,10 @@
         .loading.show {
             display: block;
         }
+
+        #fileInput {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -150,7 +223,29 @@
     </div>
 
     <div class="input-box">
-        <textarea id="question" placeholder="请输入孩子的数学题目（支持应用题、计算题、几何题等）"></textarea>
+        <!-- 切换标签 -->
+        <div class="tab-container">
+            <div class="tab active" data-tab="text">文字搜题</div>
+            <div class="tab" data-tab="photo">拍照搜题</div>
+        </div>
+
+        <!-- 文字搜题面板 -->
+        <div class="tab-content active" id="text-tab">
+            <textarea id="question" placeholder="请输入孩子的数学题目（支持应用题、计算题、几何题等）"></textarea>
+        </div>
+
+        <!-- 拍照搜题面板 -->
+        <div class="tab-content" id="photo-tab">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📷</div>
+                <div class="upload-tip">点击上传题目照片（支持拍照/相册选择）</div>
+            </div>
+            <div class="upload-preview" id="previewArea">
+                <img id="previewImg" src="" alt="题目预览">
+            </div>
+            <input type="file" id="fileInput" accept="image/*" capture="camera">
+        </div>
+
         <button class="btn-submit" id="submitBtn">立即AI解题</button>
     </div>
 
@@ -172,9 +267,9 @@
             <div class="result-content" id="parent"></div>
         </div>
 
-        <!-- 微信引流模块 -->
+        <!-- 微信引流模块（这里可以改成你的微信号） -->
         <div class="wechat-tip">
-            添加老师微信：<b>laoshi668</b><br>
+            添加老师微信：<b>我的微信号</b><br>
             免费领取【孩子专属完整学习报告+薄弱知识点专项练习】
         </div>
     </div>
@@ -184,31 +279,81 @@
         const questionInput = document.getElementById('question');
         const resultBox = document.getElementById('result');
         const loading = document.getElementById('loading');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const previewArea = document.getElementById('previewArea');
+        const previewImg = document.getElementById('previewImg');
 
-        // AI解题核心逻辑（可直接使用，如需对接真实AI可替换接口）
-        submitBtn.addEventListener('click', async () => {
-            const question = questionInput.value.trim();
-            if (!question) {
-                alert('请输入数学题目');
-                return;
+        // 切换标签
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(`${targetTab}-tab`).classList.add('active');
+            });
+        });
+
+        // 上传图片
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    previewImg.src = event.target.result;
+                    uploadArea.style.display = 'none';
+                    previewArea.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
             }
+        });
+
+        // AI解题核心逻辑
+        submitBtn.addEventListener('click', async () => {
+            const activeTab = document.querySelector('.tab.active').dataset.tab;
+            let inputValid = false;
+
+            // 检查输入是否有效
+            if (activeTab === 'text') {
+                const question = questionInput.value.trim();
+                if (!question) {
+                    alert('请输入数学题目');
+                    return;
+                }
+                inputValid = true;
+            } else if (activeTab === 'photo') {
+                if (!previewImg.src || previewImg.src === '') {
+                    alert('请先上传题目照片');
+                    return;
+                }
+                inputValid = true;
+            }
+
+            if (!inputValid) return;
 
             // 加载状态
             submitBtn.disabled = true;
             loading.classList.add('show');
             resultBox.classList.remove('show');
 
-            // 模拟AI分析延迟
+            // 模拟AI分析延迟（实际可对接OCR和AI接口）
             setTimeout(() => {
-                analyzeQuestion(question);
+                analyzeQuestion();
                 loading.classList.remove('show');
                 resultBox.classList.add('show');
                 submitBtn.disabled = false;
-            }, 1200);
+            }, 1500);
         });
 
-        // 题目分析函数（内置AI逻辑，覆盖小学/初中数学）
-        function analyzeQuestion(question) {
+        // 题目分析函数
+        function analyzeQuestion() {
             // 分步骤解题思路
             document.getElementById('step').innerHTML = `
                 1. 先看清题目要求，确定考察的数学概念<br>
